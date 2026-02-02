@@ -86,7 +86,7 @@
         </nav>
 
         <div class="max-w-7xl mx-auto px-4 py-12">
-            <!-- Enhanced Stats Cards Row -->
+            <!-- Enhanced Stats Cards Row (kept exactly as provided – already good) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border dark:border-gray-700 flex items-center gap-4 transition-all hover:shadow-xl">
                     <div class="p-4 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
@@ -195,6 +195,9 @@
     </div>
 
     <script>
+        // ────────────────────────────────────────────────
+        // Firebase Config & Initialization
+        // ────────────────────────────────────────────────
         const firebaseConfig = {
             apiKey: "AIzaSyC4kR_HiywObXho8Zh20JyzC40iVrZq3lo",
             authDomain: "kasifix-5b102.firebaseapp.com",
@@ -209,6 +212,9 @@
         const db = firebase.database();
         const auth = firebase.auth();
 
+        // ────────────────────────────────────────────────
+        // Theme (Dark/Light) Handling – already functional, unchanged
+        // ────────────────────────────────────────────────
         function toggleDarkMode() {
             document.documentElement.classList.toggle('dark');
             localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
@@ -219,6 +225,9 @@
             document.documentElement.classList.add('dark');
         }
 
+        // ────────────────────────────────────────────────
+        // Admin Password & Auto-login
+        // ────────────────────────────────────────────────
         const SAVED_PASSWORD_KEY = 'kasifix_admin_saved_pw';
         const ADMIN_PASSWORD = "kasifix2024admin"; // ← CHANGE THIS IN PRODUCTION!
 
@@ -232,6 +241,9 @@
             }
         });
 
+        // ────────────────────────────────────────────────
+        // Authentication Handlers
+        // ────────────────────────────────────────────────
         function signInWithGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
             provider.setCustomParameters({ prompt: 'select_account' });
@@ -283,6 +295,9 @@
             }
         });
 
+        // ────────────────────────────────────────────────
+        // Core Dashboard Logic
+        // ────────────────────────────────────────────────
         const adminContainer = document.getElementById('admin-container');
         const totalCountEl = document.getElementById('total-count');
         const pendingCountEl = document.getElementById('pending-count');
@@ -332,10 +347,12 @@
             document.getElementById('stat-pending').textContent = pending;
             document.getElementById('stat-verified').textContent = verified;
             document.getElementById('stat-avg-rate').textContent = `R${avgRate}`;
-
             totalCountEl.textContent = total;
             pendingCountEl.textContent = pending;
         }
+
+        // Rest of your original script remains unchanged...
+        // (populateCategoryFilter, filterHustlers, formatDateTime, renderAdminHustlers, toggleVerify, deleteHustler, openAddModal, closeAddModal, submitNewHustler)
 
         function populateCategoryFilter() {
             const select = document.getElementById('category-filter');
@@ -443,23 +460,15 @@
         }
 
         function toggleVerify(id, makeVerified) {
-            const updates = {
-                verified: makeVerified
-            };
-
+            const updates = { verified: makeVerified };
             if (makeVerified) {
                 updates.verifiedAt = firebase.database.ServerValue.TIMESTAMP;
             } else {
                 updates.verifiedAt = null;
             }
-
             db.ref('hustlers/' + id).update(updates)
-                .then(() => {
-                    showToast(makeVerified ? "Hustler verified" : "Verification removed", "success");
-                })
-                .catch(err => {
-                    showToast('Error updating status: ' + err.message, "error");
-                });
+                .then(() => showToast(makeVerified ? "Hustler verified" : "Verification removed", "success"))
+                .catch(err => showToast('Error updating status: ' + err.message, "error"));
         }
 
         function deleteHustler(id) {
