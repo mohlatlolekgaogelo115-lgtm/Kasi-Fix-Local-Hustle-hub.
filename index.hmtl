@@ -30,13 +30,12 @@
             opacity: 1;
         }
         .toast.success { background: #10b981; color: white; }
-        .toast.error   { background: #ef4444; color: white; }
-        .toast.info    { background: #3b82f6;  color: white; }
-        .toast.warning { background: #f59e0b;  color: white; }
+        .toast.error { background: #ef4444; color: white; }
+        .toast.info { background: #3b82f6; color: white; }
+        .toast.warning { background: #f59e0b; color: white; }
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-950 min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-300">
-
     <div id="toast-container"></div>
 
     <!-- Login Screen -->
@@ -44,25 +43,19 @@
         <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-10 max-w-md w-full text-center">
             <h1 class="text-4xl font-extrabold text-[#1e3a8a] dark:text-blue-400 mb-8">KasiFix<span class="text-[#f97316]">Fix</span> Admin</h1>
             <p class="text-gray-600 dark:text-gray-400 mb-8">Sign in with Google or use admin password.</p>
-
             <button onclick="signInWithGoogle()" class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 py-4 rounded-xl font-medium text-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition shadow-md flex items-center justify-center gap-3 mb-6">
                 <i class="fa-brands fa-google text-xl text-[#4285F4]"></i>
                 Sign in with Google
             </button>
-
             <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">— or use admin password —</p>
-
             <input type="password" id="admin-password" placeholder="Password" class="w-full px-6 py-4 rounded-xl border border-gray-300 dark:border-gray-600 focus:border-[#f97316] outline-none text-lg mb-4 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-
             <div class="flex items-center justify-start mb-6 text-sm text-gray-600 dark:text-gray-400">
                 <input type="checkbox" id="remember-password" class="w-4 h-4 text-[#f97316] border-gray-300 dark:border-gray-600 rounded focus:ring-[#f97316]">
                 <label for="remember-password" class="ml-2 cursor-pointer">Remember password on this device</label>
             </div>
-
             <button onclick="adminLogin()" class="w-full bg-[#f97316] text-white py-4 rounded-xl font-bold text-lg hover:bg-orange-600 transition shadow-lg">
                 Login with Password
             </button>
-
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-6">Only authorized accounts can access this dashboard.</p>
         </div>
     </div>
@@ -76,9 +69,13 @@
                         <span class="text-2xl font-extrabold text-[#1e3a8a] dark:text-blue-400">KasiFix<span class="text-[#f97316]">Fix</span> Admin</span>
                     </div>
                     <div class="flex items-center gap-4">
-                        <button onclick="toggleDarkMode()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300">
+                        <button onclick="toggleDarkMode()" class="p-3 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition flex items-center gap-2">
                             <i class="fa-solid fa-moon text-xl dark:hidden"></i>
                             <i class="fa-solid fa-sun text-xl hidden dark:inline"></i>
+                            <span class="text-sm font-medium hidden sm:inline">
+                                <span class="dark:hidden">Dark</span>
+                                <span class="hidden dark:inline">Light</span> Mode
+                            </span>
                         </button>
                         <button onclick="logout()" class="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 font-medium">
                             <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Logout
@@ -89,23 +86,43 @@
         </nav>
 
         <div class="max-w-7xl mx-auto px-4 py-12">
-            <!-- NEW: Stats Cards Row -->
+            <!-- Enhanced Stats Cards Row -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow border dark:border-gray-700">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Total Hustlers</p>
-                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-1" id="stat-total">0</p>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border dark:border-gray-700 flex items-center gap-4 transition-all hover:shadow-xl">
+                    <div class="p-4 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
+                        <i class="fa-solid fa-users text-3xl text-blue-600 dark:text-blue-400"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Total Hustlers</p>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white mt-1" id="stat-total">0</p>
+                    </div>
                 </div>
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow border dark:border-gray-700">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Pending</p>
-                    <p class="text-3xl font-bold text-yellow-600 dark:text-yellow-400 mt-1" id="stat-pending">0</p>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border dark:border-gray-700 flex items-center gap-4 transition-all hover:shadow-xl">
+                    <div class="p-4 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl">
+                        <i class="fa-solid fa-hourglass-half text-3xl text-yellow-600 dark:text-yellow-400"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Pending</p>
+                        <p class="text-3xl font-bold text-yellow-600 dark:text-yellow-400 mt-1" id="stat-pending">0</p>
+                    </div>
                 </div>
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow border dark:border-gray-700">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Verified</p>
-                    <p class="text-3xl font-bold text-green-600 dark:text-green-400 mt-1" id="stat-verified">0</p>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border dark:border-gray-700 flex items-center gap-4 transition-all hover:shadow-xl">
+                    <div class="p-4 bg-green-100 dark:bg-green-900/30 rounded-xl">
+                        <i class="fa-solid fa-check-circle text-3xl text-green-600 dark:text-green-400"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Verified</p>
+                        <p class="text-3xl font-bold text-green-600 dark:text-green-400 mt-1" id="stat-verified">0</p>
+                    </div>
                 </div>
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow border dark:border-gray-700">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Avg Hourly Rate</p>
-                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-1" id="stat-avg-rate">R0</p>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border dark:border-gray-700 flex items-center gap-4 transition-all hover:shadow-xl">
+                    <div class="p-4 bg-purple-100 dark:bg-purple-900/30 rounded-xl">
+                        <i class="fa-solid fa-sack-dollar text-3xl text-purple-600 dark:text-purple-400"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Avg Hourly Rate</p>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white mt-1" id="stat-avg-rate">R0</p>
+                    </div>
                 </div>
             </div>
 
@@ -155,7 +172,7 @@
         </div>
     </div>
 
-    <!-- Add Hustler Modal (with dark mode support) -->
+    <!-- Add Hustler Modal -->
     <div id="add-modal" class="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50 hidden px-4">
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
             <div class="p-6 border-b dark:border-gray-700">
@@ -192,20 +209,18 @@
         const db = firebase.database();
         const auth = firebase.auth();
 
-        // Dark mode toggle
         function toggleDarkMode() {
             document.documentElement.classList.toggle('dark');
             localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
         }
 
-        // Load saved theme preference
-        if (localStorage.getItem('theme') === 'dark' || 
+        if (localStorage.getItem('theme') === 'dark' ||
             (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         }
 
         const SAVED_PASSWORD_KEY = 'kasifix_admin_saved_pw';
-        const ADMIN_PASSWORD = "kasifix2024admin"; // CHANGE THIS!
+        const ADMIN_PASSWORD = "kasifix2024admin"; // ← CHANGE THIS IN PRODUCTION!
 
         window.addEventListener('load', () => {
             const savedPw = localStorage.getItem(SAVED_PASSWORD_KEY);
@@ -268,7 +283,6 @@
             }
         });
 
-        // ── Rest of your original script (unchanged except stats update) ──
         const adminContainer = document.getElementById('admin-container');
         const totalCountEl = document.getElementById('total-count');
         const pendingCountEl = document.getElementById('pending-count');
@@ -302,7 +316,7 @@
                 }
                 populateCategoryFilter();
                 filterHustlers();
-                updateStats(); // NEW: update stats cards
+                updateStats();
             });
         }
 
@@ -310,7 +324,7 @@
             const total = allHustlers.length;
             const pending = allHustlers.filter(h => !h.verified).length;
             const verified = total - pending;
-            const avgRate = total > 0 
+            const avgRate = total > 0
                 ? (allHustlers.reduce((sum, h) => sum + (Number(h.rate) || 0), 0) / total).toFixed(0)
                 : 0;
 
@@ -318,7 +332,7 @@
             document.getElementById('stat-pending').textContent = pending;
             document.getElementById('stat-verified').textContent = verified;
             document.getElementById('stat-avg-rate').textContent = `R${avgRate}`;
-            
+
             totalCountEl.textContent = total;
             pendingCountEl.textContent = pending;
         }
@@ -363,23 +377,25 @@
                 }
                 return;
             }
+
             adminContainer.innerHTML = '';
             hustlersToShow.forEach(h => {
                 const date = h.timestamp ? new Date(h.timestamp).toLocaleString('en-ZA') : 'Unknown';
-                const statusClass = h.verified 
-                    ? 'bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300' 
+                const statusClass = h.verified
+                    ? 'bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300'
                     : 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300';
                 const statusText = h.verified ? 'VERIFIED' : 'PENDING';
                 const verifyBtnText = h.verified ? 'Unverify' : 'Verify';
-                const verifyBtnClass = h.verified 
-                    ? 'bg-orange-500 hover:bg-orange-600' 
+                const verifyBtnClass = h.verified
+                    ? 'bg-orange-500 hover:bg-orange-600'
                     : 'bg-green-600 hover:bg-green-700';
+
                 const imageHtml = h.imageUrl
                     ? `<img src="${h.imageUrl}" alt="${h.name}" class="w-24 h-24 rounded-xl object-cover shadow">`
                     : `<div class="bg-gray-200 dark:bg-gray-700 border-2 border-dashed rounded-xl w-24 h-24 flex items-center justify-center text-3xl font-bold text-gray-400 dark:text-gray-500">${h.name?.charAt(0).toUpperCase() || '?'}</div>`;
 
                 const card = `
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border dark:border-gray-700 overflow-hidden">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border dark:border-gray-700 overflow-hidden transition-all hover:shadow-xl">
                     <div class="p-6 flex flex-col md:flex-row">
                         <div class="mb-4 md:mb-0 md:mr-8">${imageHtml}</div>
                         <div class="flex-grow">
@@ -464,12 +480,16 @@
             const name = document.getElementById('new-name').value.trim();
             const category = document.getElementById('new-category').value.trim();
             const phone = document.getElementById('new-phone').value.trim();
+
             if (!name || !category || !phone) {
                 showToast("Name, Category, and Phone Number are required", "error");
                 return;
             }
+
             const newHustler = {
-                name, category, phone,
+                name,
+                category,
+                phone,
                 location: document.getElementById('new-location').value.trim() || null,
                 rate: document.getElementById('new-rate').value.trim() || null,
                 bio: document.getElementById('new-bio').value.trim() || null,
@@ -477,6 +497,7 @@
                 verified: false,
                 timestamp: firebase.database.ServerValue.TIMESTAMP
             };
+
             db.ref('hustlers').push(newHustler)
                 .then(() => {
                     showToast("Hustler added successfully!", "success");
