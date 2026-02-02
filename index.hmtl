@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,28 +35,27 @@
         .toast.warning { background: #f59e0b;  color: white; }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 dark:bg-gray-950 min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-300">
 
     <div id="toast-container"></div>
 
     <!-- Login Screen -->
     <div id="login-screen" class="flex items-center justify-center min-h-screen px-4">
-        <div class="bg-white rounded-3xl shadow-2xl p-10 max-w-md w-full text-center">
-            <h1 class="text-4xl font-extrabold text-[#1e3a8a] mb-8">KasiFix<span class="text-[#f97316]">Fix</span> Admin</h1>
-            <p class="text-gray-600 mb-8">Sign in with Google or use admin password.</p>
+        <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-10 max-w-md w-full text-center">
+            <h1 class="text-4xl font-extrabold text-[#1e3a8a] dark:text-blue-400 mb-8">KasiFix<span class="text-[#f97316]">Fix</span> Admin</h1>
+            <p class="text-gray-600 dark:text-gray-400 mb-8">Sign in with Google or use admin password.</p>
 
-            <!-- Google Sign-In Button -->
-            <button onclick="signInWithGoogle()" class="w-full bg-white border border-gray-300 text-gray-800 py-4 rounded-xl font-medium text-lg hover:bg-gray-50 transition shadow-md flex items-center justify-center gap-3 mb-6">
+            <button onclick="signInWithGoogle()" class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 py-4 rounded-xl font-medium text-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition shadow-md flex items-center justify-center gap-3 mb-6">
                 <i class="fa-brands fa-google text-xl text-[#4285F4]"></i>
                 Sign in with Google
             </button>
 
-            <p class="text-sm text-gray-500 mb-4">— or use admin password —</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">— or use admin password —</p>
 
-            <input type="password" id="admin-password" placeholder="Password" class="w-full px-6 py-4 rounded-xl border border-gray-300 focus:border-[#f97316] outline-none text-lg mb-4">
+            <input type="password" id="admin-password" placeholder="Password" class="w-full px-6 py-4 rounded-xl border border-gray-300 dark:border-gray-600 focus:border-[#f97316] outline-none text-lg mb-4 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
 
-            <div class="flex items-center justify-start mb-6 text-sm text-gray-600">
-                <input type="checkbox" id="remember-password" class="w-4 h-4 text-[#f97316] border-gray-300 rounded focus:ring-[#f97316]">
+            <div class="flex items-center justify-start mb-6 text-sm text-gray-600 dark:text-gray-400">
+                <input type="checkbox" id="remember-password" class="w-4 h-4 text-[#f97316] border-gray-300 dark:border-gray-600 rounded focus:ring-[#f97316]">
                 <label for="remember-password" class="ml-2 cursor-pointer">Remember password on this device</label>
             </div>
 
@@ -64,37 +63,63 @@
                 Login with Password
             </button>
 
-            <p class="text-xs text-gray-500 mt-6">Only authorized accounts can access this dashboard.</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-6">Only authorized accounts can access this dashboard.</p>
         </div>
     </div>
 
-    <!-- Dashboard (unchanged) -->
+    <!-- Dashboard -->
     <div id="dashboard" class="hidden">
-        <nav class="bg-white border-b sticky top-0 z-40 shadow-sm">
+        <nav class="bg-white dark:bg-gray-900 border-b dark:border-gray-800 sticky top-0 z-40 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16 items-center">
                     <div class="flex items-center">
-                        <span class="text-2xl font-extrabold text-[#1e3a8a]">KasiFix<span class="text-[#f97316]">Fix</span> Admin</span>
+                        <span class="text-2xl font-extrabold text-[#1e3a8a] dark:text-blue-400">KasiFix<span class="text-[#f97316]">Fix</span> Admin</span>
                     </div>
-                    <button onclick="logout()" class="text-gray-600 hover:text-red-600 font-medium">
-                        <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Logout
-                    </button>
+                    <div class="flex items-center gap-4">
+                        <button onclick="toggleDarkMode()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300">
+                            <i class="fa-solid fa-moon text-xl dark:hidden"></i>
+                            <i class="fa-solid fa-sun text-xl hidden dark:inline"></i>
+                        </button>
+                        <button onclick="logout()" class="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 font-medium">
+                            <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Logout
+                        </button>
+                    </div>
                 </div>
             </div>
         </nav>
 
         <div class="max-w-7xl mx-auto px-4 py-12">
+            <!-- NEW: Stats Cards Row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow border dark:border-gray-700">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Total Hustlers</p>
+                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-1" id="stat-total">0</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow border dark:border-gray-700">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Pending</p>
+                    <p class="text-3xl font-bold text-yellow-600 dark:text-yellow-400 mt-1" id="stat-pending">0</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow border dark:border-gray-700">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Verified</p>
+                    <p class="text-3xl font-bold text-green-600 dark:text-green-400 mt-1" id="stat-verified">0</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow border dark:border-gray-700">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Avg Hourly Rate</p>
+                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-1" id="stat-avg-rate">R0</p>
+                </div>
+            </div>
+
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-6">
                 <div>
-                    <h2 class="text-3xl font-extrabold text-gray-900">Hustler Applications</h2>
-                    <p class="text-gray-600">Manage and verify new hustler profiles.</p>
+                    <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Hustler Applications</h2>
+                    <p class="text-gray-600 dark:text-gray-400">Manage and verify new hustler profiles.</p>
                 </div>
                 <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 text-right">
-                    <button onclick="openAddModal()" class="bg-[#1e3a8a] text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-900 transition shadow">
+                    <button onclick="openAddModal()" class="bg-[#1e3a8a] dark:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-900 dark:hover:bg-blue-800 transition shadow">
                         <i class="fa-solid fa-plus mr-2"></i> Add Hustler
                     </button>
                     <div class="whitespace-nowrap">
-                        <p class="text-sm text-gray-500">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
                             Total registered hustlers: <span id="total-count">0</span><br>
                             Pending applications: <span id="pending-count">0</span>
                         </p>
@@ -102,19 +127,19 @@
                 </div>
             </div>
 
-            <!-- Filters (unchanged) -->
-            <div class="bg-white p-6 rounded-2xl shadow border border-gray-200 mb-8">
+            <!-- Filters -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow border dark:border-gray-700 mb-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Search</label>
                         <div class="relative">
-                            <input type="text" id="search-input" placeholder="Name, phone, location..." class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 focus:border-[#f97316] outline-none" oninput="filterHustlers()">
-                            <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" id="search-input" placeholder="Name, phone, location..." class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:border-[#f97316] outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" oninput="filterHustlers()">
+                            <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                        <select id="category-filter" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#f97316] outline-none bg-white" onchange="filterHustlers()">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Category</label>
+                        <select id="category-filter" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:border-[#f97316] outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" onchange="filterHustlers()">
                             <option value="all">All Categories</option>
                         </select>
                     </div>
@@ -122,7 +147,7 @@
             </div>
 
             <div id="admin-container" class="space-y-6">
-                <div class="text-center py-20 text-gray-500">
+                <div class="text-center py-20 text-gray-500 dark:text-gray-400">
                     <i class="fa-solid fa-circle-notch fa-spin text-4xl mb-4"></i>
                     <p class="text-lg">Loading applications...</p>
                 </div>
@@ -130,23 +155,23 @@
         </div>
     </div>
 
-    <!-- Add Hustler Modal (unchanged) -->
-    <div id="add-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden px-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
-            <div class="p-6 border-b">
-                <h3 class="text-2xl font-bold text-gray-900">Add New Hustler</h3>
+    <!-- Add Hustler Modal (with dark mode support) -->
+    <div id="add-modal" class="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50 hidden px-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b dark:border-gray-700">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Add New Hustler</h3>
             </div>
             <div class="p-6 space-y-5">
-                <div><label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label><input type="text" id="new-name" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#f97316] outline-none" required></div>
-                <div><label class="block text-sm font-medium text-gray-700 mb-1">Category *</label><input type="text" id="new-category" placeholder="e.g. Plumber, Electrician, Cleaner" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#f97316] outline-none" required></div>
-                <div><label class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label><input type="tel" id="new-phone" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#f97316] outline-none" required></div>
-                <div><label class="block text-sm font-medium text-gray-700 mb-1">Location</label><input type="text" id="new-location" placeholder="e.g. Soweto, Johannesburg" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#f97316] outline-none"></div>
-                <div><label class="block text-sm font-medium text-gray-700 mb-1">Hourly Rate (R)</label><input type="number" id="new-rate" placeholder="e.g. 250" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#f97316] outline-none"></div>
-                <div><label class="block text-sm font-medium text-gray-700 mb-1">Bio</label><textarea id="new-bio" rows="4" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#f97316] outline-none"></textarea></div>
-                <div><label class="block text-sm font-medium text-gray-700 mb-1">Profile Image URL (optional)</label><input type="url" id="new-image" placeholder="https://..." class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#f97316] outline-none"></div>
+                <div><label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name *</label><input type="text" id="new-name" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:border-[#f97316] outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required></div>
+                <div><label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category *</label><input type="text" id="new-category" placeholder="e.g. Plumber, Electrician, Cleaner" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:border-[#f97316] outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required></div>
+                <div><label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number *</label><input type="tel" id="new-phone" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:border-[#f97316] outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required></div>
+                <div><label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label><input type="text" id="new-location" placeholder="e.g. Soweto, Johannesburg" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:border-[#f97316] outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"></div>
+                <div><label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Hourly Rate (R)</label><input type="number" id="new-rate" placeholder="e.g. 250" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:border-[#f97316] outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"></div>
+                <div><label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bio</label><textarea id="new-bio" rows="4" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:border-[#f97316] outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"></textarea></div>
+                <div><label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Profile Image URL (optional)</label><input type="url" id="new-image" placeholder="https://..." class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:border-[#f97316] outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"></div>
             </div>
-            <div class="p-6 border-t flex justify-end gap-4">
-                <button onclick="closeAddModal()" class="px-6 py-3 rounded-xl border border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition">Cancel</button>
+            <div class="p-6 border-t dark:border-gray-700 flex justify-end gap-4">
+                <button onclick="closeAddModal()" class="px-6 py-3 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition">Cancel</button>
                 <button onclick="submitNewHustler()" class="px-6 py-3 rounded-xl bg-[#f97316] text-white font-bold hover:bg-orange-600 transition">Add Hustler</button>
             </div>
         </div>
@@ -167,8 +192,20 @@
         const db = firebase.database();
         const auth = firebase.auth();
 
-        // ── Auto-login with saved password (NEW) ───────────────────────────────
+        // Dark mode toggle
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        }
+
+        // Load saved theme preference
+        if (localStorage.getItem('theme') === 'dark' || 
+            (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
         const SAVED_PASSWORD_KEY = 'kasifix_admin_saved_pw';
+        const ADMIN_PASSWORD = "kasifix2024admin"; // CHANGE THIS!
 
         window.addEventListener('load', () => {
             const savedPw = localStorage.getItem(SAVED_PASSWORD_KEY);
@@ -180,15 +217,12 @@
             }
         });
 
-        // ── Google Sign-In (unchanged) ─────────────────────────────────────────
         function signInWithGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
             provider.setCustomParameters({ prompt: 'select_account' });
-
             auth.signInWithPopup(provider)
                 .then((result) => {
-                    const user = result.user;
-                    showToast(`Welcome, ${user.displayName || 'Admin'}!`, "success");
+                    showToast(`Welcome, ${result.user.displayName || 'Admin'}!`, "success");
                     document.getElementById('login-screen').classList.add('hidden');
                     document.getElementById('dashboard').classList.remove('hidden');
                     loadHustlers();
@@ -197,24 +231,15 @@
                     let message = "Google sign-in failed";
                     if (error.code === 'auth/popup-closed-by-user') message = "Sign-in cancelled";
                     showToast(message, "error");
-                    console.error(error);
                 });
         }
-
-        // ── Password Login + Remember option (updated) ─────────────────────────
-        const ADMIN_PASSWORD = "kasifix2024admin"; // CHANGE THIS!
 
         function adminLogin() {
             const entered = document.getElementById('admin-password').value;
             const remember = document.getElementById('remember-password').checked;
-
             if (entered === ADMIN_PASSWORD) {
-                if (remember) {
-                    localStorage.setItem(SAVED_PASSWORD_KEY, entered);
-                } else {
-                    localStorage.removeItem(SAVED_PASSWORD_KEY);
-                }
-
+                if (remember) localStorage.setItem(SAVED_PASSWORD_KEY, entered);
+                else localStorage.removeItem(SAVED_PASSWORD_KEY);
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
                 loadHustlers();
@@ -224,22 +249,17 @@
             }
         }
 
-        // ── Logout (updated to also clear saved password) ──────────────────────
         function logout() {
             localStorage.removeItem(SAVED_PASSWORD_KEY);
-
             auth.signOut().then(() => {
                 document.getElementById('dashboard').classList.add('hidden');
                 document.getElementById('login-screen').classList.remove('hidden');
                 document.getElementById('admin-password').value = '';
                 document.getElementById('remember-password').checked = false;
                 showToast("Logged out successfully", "info");
-            }).catch((error) => {
-                showToast("Logout error: " + error.message, "error");
             });
         }
 
-        // Auth state listener (unchanged)
         auth.onAuthStateChanged((user) => {
             if (user) {
                 document.getElementById('login-screen').classList.add('hidden');
@@ -248,7 +268,7 @@
             }
         });
 
-        // ── All code below this line is completely unchanged ───────────────────
+        // ── Rest of your original script (unchanged except stats update) ──
         const adminContainer = document.getElementById('admin-container');
         const totalCountEl = document.getElementById('total-count');
         const pendingCountEl = document.getElementById('pending-count');
@@ -276,25 +296,38 @@
                 allHustlers = [];
                 if (snapshot.val()) {
                     Object.keys(snapshot.val()).forEach(key => {
-                        allHustlers.push({
-                            id: key,
-                            ...snapshot.val()[key]
-                        });
+                        allHustlers.push({ id: key, ...snapshot.val()[key] });
                     });
                     allHustlers.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
                 }
                 populateCategoryFilter();
                 filterHustlers();
+                updateStats(); // NEW: update stats cards
             });
+        }
+
+        function updateStats() {
+            const total = allHustlers.length;
+            const pending = allHustlers.filter(h => !h.verified).length;
+            const verified = total - pending;
+            const avgRate = total > 0 
+                ? (allHustlers.reduce((sum, h) => sum + (Number(h.rate) || 0), 0) / total).toFixed(0)
+                : 0;
+
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-pending').textContent = pending;
+            document.getElementById('stat-verified').textContent = verified;
+            document.getElementById('stat-avg-rate').textContent = `R${avgRate}`;
+            
+            totalCountEl.textContent = total;
+            pendingCountEl.textContent = pending;
         }
 
         function populateCategoryFilter() {
             const select = document.getElementById('category-filter');
             const categories = new Set();
             allHustlers.forEach(h => {
-                if (h.category && h.category.trim()) {
-                    categories.add(h.category.trim());
-                }
+                if (h.category && h.category.trim()) categories.add(h.category.trim());
             });
             while (select.options.length > 1) select.remove(1);
             [...categories].sort().forEach(cat => {
@@ -314,8 +347,7 @@
                     (h.phone || '').toLowerCase().includes(search) ||
                     (h.location || '').toLowerCase().includes(search) ||
                     (h.category || '').toLowerCase().includes(search);
-                const matchesCategory = categoryFilter === 'all' ||
-                    (h.category || '').toLowerCase() === categoryFilter;
+                const matchesCategory = categoryFilter === 'all' || (h.category || '').toLowerCase() === categoryFilter;
                 return matchesSearch && matchesCategory;
             });
             renderAdminHustlers();
@@ -325,50 +357,50 @@
             const hustlersToShow = filteredHustlers;
             if (hustlersToShow.length === 0) {
                 if (allHustlers.length === 0) {
-                    adminContainer.innerHTML = `<div class="text-center py-20 text-gray-500"><i class="fa-solid fa-inbox text-6xl mb-4 opacity-50"></i><p class="text-lg">No applications yet.</p></div>`;
+                    adminContainer.innerHTML = `<div class="text-center py-20 text-gray-500 dark:text-gray-400"><i class="fa-solid fa-inbox text-6xl mb-4 opacity-50"></i><p class="text-lg">No applications yet.</p></div>`;
                 } else {
-                    adminContainer.innerHTML = `<div class="text-center py-20 text-gray-500"><i class="fa-solid fa-filter text-6xl mb-4 opacity-50"></i><p class="text-lg">No hustlers match your filters.</p></div>`;
+                    adminContainer.innerHTML = `<div class="text-center py-20 text-gray-500 dark:text-gray-400"><i class="fa-solid fa-filter text-6xl mb-4 opacity-50"></i><p class="text-lg">No hustlers match your filters.</p></div>`;
                 }
-                totalCountEl.textContent = allHustlers.length;
-                pendingCountEl.textContent = allHustlers.filter(h => !h.verified).length;
                 return;
             }
-            const pending = allHustlers.filter(h => !h.verified).length;
-            totalCountEl.textContent = allHustlers.length;
-            pendingCountEl.textContent = pending;
             adminContainer.innerHTML = '';
             hustlersToShow.forEach(h => {
                 const date = h.timestamp ? new Date(h.timestamp).toLocaleString('en-ZA') : 'Unknown';
-                const statusClass = h.verified ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800';
+                const statusClass = h.verified 
+                    ? 'bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300' 
+                    : 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300';
                 const statusText = h.verified ? 'VERIFIED' : 'PENDING';
                 const verifyBtnText = h.verified ? 'Unverify' : 'Verify';
-                const verifyBtnClass = h.verified ? 'bg-orange-500 hover:bg-orange-600' : 'bg-green-600 hover:bg-green-700';
+                const verifyBtnClass = h.verified 
+                    ? 'bg-orange-500 hover:bg-orange-600' 
+                    : 'bg-green-600 hover:bg-green-700';
                 const imageHtml = h.imageUrl
                     ? `<img src="${h.imageUrl}" alt="${h.name}" class="w-24 h-24 rounded-xl object-cover shadow">`
-                    : `<div class="bg-gray-200 border-2 border-dashed rounded-xl w-24 h-24 flex items-center justify-center text-3xl font-bold text-gray-400">${h.name.charAt(0).toUpperCase()}</div>`;
+                    : `<div class="bg-gray-200 dark:bg-gray-700 border-2 border-dashed rounded-xl w-24 h-24 flex items-center justify-center text-3xl font-bold text-gray-400 dark:text-gray-500">${h.name?.charAt(0).toUpperCase() || '?'}</div>`;
+
                 const card = `
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border dark:border-gray-700 overflow-hidden">
                     <div class="p-6 flex flex-col md:flex-row">
                         <div class="mb-4 md:mb-0 md:mr-8">${imageHtml}</div>
                         <div class="flex-grow">
                             <div class="flex justify-between items-start mb-3">
                                 <div>
-                                    <h3 class="text-xl font-extrabold text-gray-900">${h.name || 'No name'}</h3>
-                                    <p class="text-[#f97316] font-semibold">${h.category || 'No category'}</p>
+                                    <h3 class="text-xl font-extrabold text-gray-900 dark:text-white">${h.name || 'No name'}</h3>
+                                    <p class="text-[#f97316] dark:text-orange-400 font-semibold">${h.category || 'No category'}</p>
                                 </div>
                                 <span class="px-3 py-1 rounded-full text-xs font-bold ${statusClass}">${statusText}</span>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600 dark:text-gray-400 mb-4">
                                 <p><i class="fa-solid fa-phone mr-2"></i> ${h.phone || 'No phone'}</p>
                                 <p><i class="fa-solid fa-location-dot mr-2"></i> ${h.location || 'No location'}</p>
                                 <p><i class="fa-solid fa-sack-dollar mr-2"></i> R${h.rate || '0'}/hr</p>
                                 <p><i class="fa-solid fa-calendar mr-2"></i> ${date}</p>
                             </div>
-                            <p class="text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-100"><strong>Bio:</strong> ${h.bio || 'No bio provided'}</p>
+                            <p class="text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-900/50 p-4 rounded-xl border dark:border-gray-700"><strong>Bio:</strong> ${h.bio || 'No bio provided'}</p>
                         </div>
                         <div class="ml-0 md:ml-8 mt-6 md:mt-0 flex flex-row md:flex-col gap-3">
                             <button onclick="toggleVerify('${h.id}', ${!h.verified})" class="px-6 py-3 rounded-xl text-white font-bold transition ${verifyBtnClass}">${verifyBtnText}</button>
-                            <button onclick="deleteHustler('${h.id}')" class="px-6 py-3 rounded-xl bg-red-600 text-white font-bold hover:bg-red-700 transition">Delete</button>
+                            <button onclick="deleteHustler('${h.id}')" class="px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold transition">Delete</button>
                         </div>
                     </div>
                 </div>`;
@@ -393,7 +425,7 @@
                     <span>Confirm deletion?</span>
                 </div>
                 <div class="flex gap-3">
-                    <button class="px-4 py-2 bg-white text-gray-800 rounded-lg font-medium hover:bg-gray-100" onclick="this.closest('.toast').remove()">Cancel</button>
+                    <button class="px-4 py-2 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg font-medium hover:bg-gray-100 dark:hover:bg-gray-600" onclick="this.closest('.toast').remove()">Cancel</button>
                     <button class="px-4 py-2 bg-red-700 text-white rounded-lg font-medium hover:bg-red-800" onclick="confirmDelete('${id}', this.closest('.toast'))">Delete</button>
                 </div>
             `;
