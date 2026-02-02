@@ -33,6 +33,42 @@
         .toast.error { background: #ef4444; color: white; }
         .toast.info { background: #3b82f6; color: white; }
         .toast.warning { background: #f59e0b; color: white; }
+
+        /* ──────────────────────────────────────────────── */
+        /* Micro-interactions                              */
+        /* ──────────────────────────────────────────────── */
+        .hustler-card {
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .hustler-card.animate-verify {
+            animation: verifyPulse 1.6s ease-out;
+        }
+
+        .hustler-card.animate-unverify {
+            animation: unverifyFade 1.2s ease-out;
+        }
+
+        .hustler-card.animate-status {
+            animation: statusGlow 1.8s ease-out;
+        }
+
+        @keyframes verifyPulse {
+            0%   { transform: scale(1.00); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            20%  { transform: scale(1.03); box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); }
+            100% { transform: scale(1.00); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        @keyframes unverifyFade {
+            0%   { opacity: 1; transform: translateY(0); }
+            30%  { opacity: 0.7; transform: translateY(-6px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes statusGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.5); }
+            50%      { box-shadow: 0 0 0 14px rgba(249, 115, 22, 0); }
+        }
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-950 min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-300">
@@ -86,7 +122,7 @@
         </nav>
 
         <div class="max-w-7xl mx-auto px-4 py-12">
-            <!-- Enhanced Stats Cards Row (kept exactly as provided – already good) -->
+            <!-- Stats Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border dark:border-gray-700 flex items-center gap-4 transition-all hover:shadow-xl">
                     <div class="p-4 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
@@ -207,13 +243,12 @@
             appId: "1:800882399249:web:f8ecdfb12fa98d7a5779b0",
             measurementId: "G-8NKED4DENK"
         };
-
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const auth = firebase.auth();
 
         // ────────────────────────────────────────────────
-        // Theme (Dark/Light) Handling – already functional, unchanged
+        // Theme Handling
         // ────────────────────────────────────────────────
         function toggleDarkMode() {
             document.documentElement.classList.toggle('dark');
@@ -342,7 +377,6 @@
             const avgRate = total > 0
                 ? (allHustlers.reduce((sum, h) => sum + (Number(h.rate) || 0), 0) / total).toFixed(0)
                 : 0;
-
             document.getElementById('stat-total').textContent = total;
             document.getElementById('stat-pending').textContent = pending;
             document.getElementById('stat-verified').textContent = verified;
@@ -350,9 +384,6 @@
             totalCountEl.textContent = total;
             pendingCountEl.textContent = pending;
         }
-
-        // Rest of your original script remains unchanged...
-        // (populateCategoryFilter, filterHustlers, formatDateTime, renderAdminHustlers, toggleVerify, deleteHustler, openAddModal, closeAddModal, submitNewHustler)
 
         function populateCategoryFilter() {
             const select = document.getElementById('category-filter');
@@ -399,6 +430,7 @@
 
         function renderAdminHustlers() {
             const hustlersToShow = filteredHustlers;
+
             if (hustlersToShow.length === 0) {
                 if (allHustlers.length === 0) {
                     adminContainer.innerHTML = `<div class="text-center py-20 text-gray-500 dark:text-gray-400"><i class="fa-solid fa-inbox text-6xl mb-4 opacity-50"></i><p class="text-lg">No applications yet.</p></div>`;
@@ -419,17 +451,19 @@
                 const verifyBtnClass = h.verified
                     ? 'bg-orange-500 hover:bg-orange-600'
                     : 'bg-green-600 hover:bg-green-700';
-
                 const imageHtml = h.imageUrl
                     ? `<img src="${h.imageUrl}" alt="${h.name}" class="w-24 h-24 rounded-xl object-cover shadow">`
                     : `<div class="bg-gray-200 dark:bg-gray-700 border-2 border-dashed rounded-xl w-24 h-24 flex items-center justify-center text-3xl font-bold text-gray-400 dark:text-gray-500">${h.name?.charAt(0).toUpperCase() || '?'}</div>`;
-
                 const verificationDateHtml = h.verified && h.verifiedAt
                     ? `<p class="text-xs text-green-700 dark:text-green-400 mt-2"><i class="fa-solid fa-calendar-check mr-1"></i>Verified on: ${formatDateTime(h.verifiedAt)}</p>`
                     : '';
 
-                const card = `
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border dark:border-gray-700 overflow-hidden transition-all hover:shadow-xl">
+                const card = document.createElement('div');
+                card.className = `hustler-card bg-white dark:bg-gray-800 rounded-2xl shadow-lg border dark:border-gray-700 overflow-hidden transition-all hover:shadow-xl`;
+                card.dataset.id = h.id;
+                card.dataset.verified = h.verified;
+
+                card.innerHTML = `
                     <div class="p-6 flex flex-col md:flex-row">
                         <div class="mb-4 md:mb-0 md:mr-8">${imageHtml}</div>
                         <div class="flex-grow">
@@ -454,8 +488,9 @@
                             <button onclick="deleteHustler('${h.id}')" class="px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold transition">Delete</button>
                         </div>
                     </div>
-                </div>`;
-                adminContainer.innerHTML += card;
+                `;
+
+                adminContainer.appendChild(card);
             });
         }
 
@@ -466,13 +501,35 @@
             } else {
                 updates.verifiedAt = null;
             }
+
             db.ref('hustlers/' + id).update(updates)
-                .then(() => showToast(makeVerified ? "Hustler verified" : "Verification removed", "success"))
+                .then(() => {
+                    const message = makeVerified ? "Hustler verified" : "Verification removed";
+                    showToast(message, "success");
+
+                    // Trigger animation
+                    const card = document.querySelector(`.hustler-card[data-id="${id}"]`);
+                    if (card) {
+                        card.classList.remove('animate-verify', 'animate-unverify', 'animate-status');
+
+                        setTimeout(() => {
+                            if (makeVerified) {
+                                card.classList.add('animate-verify');
+                            } else {
+                                card.classList.add('animate-unverify');
+                            }
+                            card.classList.add('animate-status');
+                        }, 20);
+
+                        card.dataset.verified = makeVerified;
+                    }
+                })
                 .catch(err => showToast('Error updating status: ' + err.message, "error"));
         }
 
         function deleteHustler(id) {
             showToast("Are you sure you want to permanently delete this hustler? This cannot be undone.", "warning");
+
             const container = document.getElementById('toast-container');
             const confirmToast = document.createElement('div');
             confirmToast.className = `toast warning px-6 py-4 rounded-xl shadow-2xl text-base font-medium flex items-center justify-between gap-4`;
